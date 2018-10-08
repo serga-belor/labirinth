@@ -1,3 +1,10 @@
+// Sergey Belorusets, 2018
+//
+// Module for http-server project to
+// process routes associated with "labirinth" progect
+// Use "express" to process requests and send responses
+//
+
 /* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
 /* eslint-env node */
 
