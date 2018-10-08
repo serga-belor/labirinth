@@ -20,6 +20,7 @@ module.exports = {
 		res.sendFile( path.resolve(__dirname, "./labirinth.html") );
 	},
 	/**
+	 * Add project's static resources
 	 * @param {Object} express host express object
 	 * @param {Object} app host express instance 
 	 */
