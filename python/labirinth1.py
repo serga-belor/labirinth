@@ -1,40 +1,54 @@
 from typing import Dict, List, Optional, Set
-from enum import Enum
+from enum import Enum, IntEnum
 import random
 
+
+class Walls(IntEnum):
+    NONE = 0
+    TOP = 0x1000
+    RIGHT = 0x0100
+    BOTTOM = 0x0010
+    LEFT = 0x0001
+    ALL = TOP | RIGHT| BOTTOM | LEFT
 
 class Cell:
     """Cell of a labirinth."""
 
-    # Walls of the cell
-    # Each item of the tuple says whether the cell has a wall with a neighbour or not.
-    # Sequence: [top, right, bottom, left]
-    WallsType = tuple[bool, bool, bool, bool]
-
     @classmethod
     def Create(cls, top: bool, right: bool, bottom: bool, left: bool) -> "Cell":
         """Create a labirinth cell with specified walls"""
-        return cls((top, right, bottom, left))
+        walls: int = Walls.NONE
+        if top:
+            walls |= Walls.TOP
+        if right:
+            walls |= Walls.RIGHT
+        if bottom:
+            walls |= Walls.BOTTOM
+        if left:
+            walls |= Walls.LEFT
+        return cls(walls)
 
-    def __init__(self, initial: WallsType) -> None:
+    def __init__(self, initial: int) -> None:
         """Initialize cell with walls: [top, right, bottom, left]"""
-        self._cell = initial
+        self._cell = initial & Walls.ALL
 
-    def IsEqual(self, cell: "Cell") -> bool:
-        lhv = self._cell
-        rhv = cell._cell
-        return lhv[0] == rhv[0] and lhv[1] == rhv[1] and lhv[2] == rhv[2] and lhv[3] == rhv[3]
-
-    def Walls(self) -> WallsType:
+    def GetWalls(self) -> int:
         """Get walls of the cell: [top, right, bottom, left]"""
         return self._cell
+
+    def IsEqual(self, rhv: "Cell") -> bool:
+        return self._cell == rhv._cell
+
+    def HaveWall(self, wall: Walls)-> bool:
+        return (self._cell & wall) == wall
+
 
 
 class Labirinth:
     # Coordinate of a cell in a matrix
     # [column, row]
     CoordType = tuple[int, int]
-    class Directions(Enum):
+    class Directions(IntEnum):
         UP = 1
         RIGHT = 2
         DOWN = 3
@@ -87,24 +101,24 @@ class Labirinth:
                 return
             if delta_x != 0 and delta_y != 0:
                 return
-            walls1 = cells[cell_idx1].Walls()
-            walls2 = cells[cell_idx2].Walls()
+            cell1 = cells[cell_idx1]
+            cell2 = cells[cell_idx2]
             if delta_x == 1:
                 # remove left wall in cell1 and right wall in cell2
-                cells[cell_idx1] = Cell.Create(walls1[0], walls1[1], walls1[2], False)
-                cells[cell_idx2] = Cell.Create(walls2[0], False, walls2[2], walls2[3])
+                cells[cell_idx1] = Cell.Create(cell1.HaveWall()[0], cell1[1], cell1[2], False)
+                cells[cell_idx2] = Cell.Create(cell2[0], False, cell2[2], cell2[3])
             elif delta_x == -1:
                 # remove right wall in cell1 and left wall in cell2
-                cells[cell_idx1] = Cell.Create(walls1[0], False, walls1[2], walls1[3])
-                cells[cell_idx2] = Cell.Create(walls2[0], walls2[1], walls2[2], False)
+                cells[cell_idx1] = Cell.Create(cell1[0], False, cell1[2], cell1[3])
+                cells[cell_idx2] = Cell.Create(cell2[0], cell2[1], cell2[2], False)
             elif delta_y == 1:
                 # remove top wall in cell1 and bottom wall in cell2
-                cells[cell_idx1] = Cell.Create(False, walls1[1], walls1[2], walls1[3])
-                cells[cell_idx2] = Cell.Create(walls2[0], walls2[1], False, walls2[3])
+                cells[cell_idx1] = Cell.Create(False, cell1[1], cell1[2], cell1[3])
+                cells[cell_idx2] = Cell.Create(cell2[0], cell2[1], False, cell2[3])
             elif delta_y == -1:
                 # remove bottom wall in cell1 and top wall in cell2
-                cells[cell_idx1] = Cell.Create(walls1[0], walls1[1], False, walls1[3])
-                cells[cell_idx2] = Cell.Create(False, walls2[1], walls2[2], walls2[3])
+                cells[cell_idx1] = Cell.Create(cell1[0], cell1[1], False, cell1[3])
+                cells[cell_idx2] = Cell.Create(False, cell2[1], cell2[2], cell2[3])
             # print("Labirinth.Generate.RemoveNeighbourCellsWall: {}, {}; new walls: {}, {}".format(
             #     str(cell_coord1), str(cell_coord2), str(cells[cell_idx1].Walls()), str(cells[cell_idx2].Walls())))
 
