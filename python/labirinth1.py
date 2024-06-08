@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Set
+from typing import Final, Dict, List, Optional, Set
 from enum import Enum, IntEnum
 import random
 
@@ -48,6 +48,11 @@ class Labirinth:
     # Coordinate of a cell in a matrix
     # [column, row]
     CoordType = tuple[int, int]
+
+    # candidate to connect with already connected cell
+    # [candfidate cell, connected cell]
+    _ConnectCandidateType = tuple[int, int]
+
     class Directions(IntEnum):
         UP = 1
         RIGHT = 2
@@ -61,9 +66,6 @@ class Labirinth:
     @classmethod
     def Generate(cls, width: int, height: int) -> "Labirinth":
         """Generate random connected labirinth with specified dimensions"""
-        # candidate to connect with already connected cell
-        # [candfidate cell, connected cell]
-        ConnectCandidateType = tuple[int, int]
 
         # fill up the list of cells with non-connected cells
         cells: list[Cell] = [Cell.Create(True, True, True, True)] * width * height
@@ -73,7 +75,7 @@ class Labirinth:
         free_cells: set[int] = {i for i in range(width * height)}
 
         # cells that are a candidate to connect with already connected cell
-        candidates: list[ConnectCandidateType] = list()
+        candidates: list[Labirinth._ConnectCandidateType] = list()
 
         def _AddFreeNeighboursAsCandidate(cell_idx: int) -> None:
             cell_coord = cls.CoordByIndex(cell_idx, width)
@@ -105,20 +107,20 @@ class Labirinth:
             cell2 = cells[cell_idx2]
             if delta_x == 1:
                 # remove left wall in cell1 and right wall in cell2
-                cells[cell_idx1] = Cell.Create(cell1.HaveWall()[0], cell1[1], cell1[2], False)
-                cells[cell_idx2] = Cell.Create(cell2[0], False, cell2[2], cell2[3])
+                cells[cell_idx1] = Cell.Create(cell1.HaveWall(Walls.TOP), cell1.HaveWall(Walls.RIGHT), cell1.HaveWall(Walls.BOTTOM), False)
+                cells[cell_idx2] = Cell.Create(cell2.HaveWall(Walls.TOP), False, cell2.HaveWall(Walls.BOTTOM), cell2.HaveWall(Walls.LEFT))
             elif delta_x == -1:
                 # remove right wall in cell1 and left wall in cell2
-                cells[cell_idx1] = Cell.Create(cell1[0], False, cell1[2], cell1[3])
-                cells[cell_idx2] = Cell.Create(cell2[0], cell2[1], cell2[2], False)
+                cells[cell_idx1] = Cell.Create(cell1.HaveWall(Walls.TOP), False, cell1.HaveWall(Walls.BOTTOM), cell1.HaveWall(Walls.LEFT))
+                cells[cell_idx2] = Cell.Create(cell2.HaveWall(Walls.TOP), cell2.HaveWall(Walls.RIGHT), cell2.HaveWall(Walls.BOTTOM), False)
             elif delta_y == 1:
                 # remove top wall in cell1 and bottom wall in cell2
-                cells[cell_idx1] = Cell.Create(False, cell1[1], cell1[2], cell1[3])
-                cells[cell_idx2] = Cell.Create(cell2[0], cell2[1], False, cell2[3])
+                cells[cell_idx1] = Cell.Create(False, cell1.HaveWall(Walls.RIGHT), cell1.HaveWall(Walls.BOTTOM), cell1.HaveWall(Walls.LEFT))
+                cells[cell_idx2] = Cell.Create(cell2.HaveWall(Walls.TOP), cell2.HaveWall(Walls.RIGHT), False, cell2.HaveWall(Walls.LEFT))
             elif delta_y == -1:
                 # remove bottom wall in cell1 and top wall in cell2
-                cells[cell_idx1] = Cell.Create(cell1[0], cell1[1], False, cell1[3])
-                cells[cell_idx2] = Cell.Create(False, cell2[1], cell2[2], cell2[3])
+                cells[cell_idx1] = Cell.Create(cell1.HaveWall(Walls.TOP), cell1.HaveWall(Walls.RIGHT), False, cell1.HaveWall(Walls.LEFT))
+                cells[cell_idx2] = Cell.Create(False, cell2.HaveWall(Walls.RIGHT), cell2.HaveWall(Walls.BOTTOM), cell2.HaveWall(Walls.LEFT))
             # print("Labirinth.Generate.RemoveNeighbourCellsWall: {}, {}; new walls: {}, {}".format(
             #     str(cell_coord1), str(cell_coord2), str(cells[cell_idx1].Walls()), str(cells[cell_idx2].Walls())))
 
@@ -138,7 +140,7 @@ class Labirinth:
             # - add its neighbour into the candidates list
             # - remove cell wall
 
-            candidate_to_add: ConnectCandidateType = random.choice(candidates)
+            candidate_to_add = random.choice(candidates)
             candidate_idx = candidate_to_add[0]
             for candidate in candidates:
                 if candidate[0] == candidate_idx:
@@ -189,82 +191,94 @@ class Labirinth:
 
     def Go(self, direction: Directions, coord: CoordType) -> Optional[Cell]:
         """Get a cell in specified direction of the specified cell if there is no wall in this direction"""
-        cell = self.GetCell(coord)
+        cell: Final = self.GetCell(coord)
         if not cell:
             return None
-        walls = cell.Walls()
+
         if direction == Labirinth.Directions.UP:
-            if walls[0]:
+            if cell.HaveWall(Walls.TOP):
                 return None
             return self.GetCell((coord[0], coord[1]-1))
+
         if direction == Labirinth.Directions.RIGHT:
-            if walls[1]:
+            if cell.HaveWall(Walls.RIGHT):
                 return None
             return self.GetCell((coord[0]+1, coord[1]))
+
         if direction == Labirinth.Directions.DOWN:
-            if walls[2]:
+            if cell.HaveWall(Walls.BOTTOM):
                 return None
             return self.GetCell((coord[0], coord[1]+1))
+
         if direction == Labirinth.Directions.LEFT:
-            if walls[3]:
+            if cell.HaveWall(Walls.LEFT):
                 return None
             return self.GetCell((coord[0]-1, coord[1]))
         raise ValueError("Unknown direction: {}".format(direction))
 
 
-    def Print(self, active_cell: Optional[CoordType]) -> None:
-        for y in range(0, self._height):
-            line1 = ""
-            line2 = ""
-            line3 = ""
-            for x in range(0, self._width):
-                walls_this = self._cells[self._width * y + x].Walls()
-                walls_up = self._cells[self._width * (y-1) + x].Walls() if y > 0 else None
-                walls_right = self._cells[self._width * y + x +1].Walls() if x < self._width - 1 else None
-                walls_down = self._cells[self._width * (y+1) + x].Walls() if y < self._height - 1 else None
-                walls_left = self._cells[self._width * y + x -1].Walls() if x > 0 else None
-                width = 4 if walls_right is None else 3
-                if walls_up is None:
-                    line1 += "\u2584" * width
-                elif walls_this[0] and walls_up[2]:
-                    line1 += "\u2588" * width
-                elif not walls_this[0] and walls_up[2]:
-                    line1 += "\u2580" * width
-                elif walls_this[0] and not walls_up[2]:
-                    line1 += "\u2584" * width
-                elif walls_left is None:
-                    line1 += "\u2588\u2504\u2504"
-                elif walls_right is None:
-                    line1 += "\u2504\u2504\u2504\u2588"
-                else:
-                    line1 += "\u2504" * width
+def PrintLabirinth(labirinth: Labirinth,
+                   active_cell_coord: Optional[Labirinth.CoordType]
+                   ) -> None:
+    labirinth_dim: Final = labirinth.Dimension()
+    labirinth_width: Final = labirinth_dim[0]
+    labirinth_height: Final = labirinth_dim[1]
+    for y in range(0, labirinth_height):
+        line1 = ""
+        line2 = ""
+        line3 = ""
+        for x in range(0, labirinth_width):
+            cell_this = labirinth.GetCell((x, y))
+            if cell_this is None:
+                print(f"Labirint is broken, cannot get cell: {x}, {y}")
+                return
 
-                if walls_left is None:
-                    line2 += "\u2588"
-                elif walls_this[3] and walls_left[1]:
-                    line2 += "\u2588"
-                elif not walls_this[3] and walls_left[1]:
-                    line2 += "\u258c"
-                elif walls_this[3] and not walls_left[1]:
-                    line2 += "\u2590"
-                else:
-                    line2 += "\u2506"
+            cell_up = labirinth.GetCell((x, y - 1))
+            cell_right = labirinth.GetCell((x + 1, y))
+            cell_down = labirinth.GetCell((x, y + 1))
+            cell_left = labirinth.GetCell((x - 1, y))
+            width = 4 if cell_right is None else 3
+            if cell_up is None:
+                line1 += "\u2584" * width
+            elif cell_this.HaveWall(Walls.TOP) and cell_up.HaveWall(Walls.BOTTOM):
+                line1 += "\u2588" * width
+            elif not cell_this.HaveWall(Walls.TOP) and cell_up.HaveWall(Walls.BOTTOM):
+                line1 += "\u2580" * width
+            elif cell_this.HaveWall(Walls.TOP) and not cell_up.HaveWall(Walls.BOTTOM):
+                line1 += "\u2584" * width
+            elif cell_left is None:
+                line1 += "\u2588\u2504\u2504"
+            elif cell_right is None:
+                line1 += "\u2504\u2504\u2504\u2588"
+            else:
+                line1 += "\u2504" * width
 
-                if active_cell and active_cell[0] == x and active_cell[1] == y:
-                    line2 += "**"
-                else:
-                    line2 += "  "
+            if cell_left is None:
+                line2 += "\u2588"
+            elif cell_this.HaveWall(Walls.LEFT) and cell_left.HaveWall(Walls.RIGHT):
+                line2 += "\u2588"
+            elif not cell_this.HaveWall(Walls.LEFT) and cell_left.HaveWall(Walls.RIGHT):
+                line2 += "\u258c"
+            elif cell_this.HaveWall(Walls.LEFT) and not cell_left.HaveWall(Walls.RIGHT):
+                line2 += "\u2590"
+            else:
+                line2 += "\u2506"
 
-                if not walls_right:
-                    line2 += "\u2588"
+            if active_cell_coord and active_cell_coord[0] == x and active_cell_coord[1] == y:
+                line2 += "**"
+            else:
+                line2 += "  "
 
-                if walls_down is None:
-                    line3 += "\u2580" * width
+            if not cell_right:
+                line2 += "\u2588"
 
-            print(line1)
-            print(line2)
-            if line3:
-                print(line3)
+            if cell_down is None:
+                line3 += "\u2580" * width
+
+        print(line1)
+        print(line2)
+        if line3:
+            print(line3)
 
 
 if __name__ == "__main__":
@@ -282,11 +296,13 @@ if __name__ == "__main__":
     #         Cell.Create(False, False, True, True), Cell.Create(True, True, True, False)
     #     ]
     # ).Print(None)
-    Labirinth(
+    labirinth = Labirinth(
         2, 2,
         [
             Cell.Create(True, False, True, True), Cell.Create(True, True, False, False),
             Cell.Create(True, False, True, True), Cell.Create(False, True, True, False)
         ]
-    ).Print(None)
+    )
     # Labirinth.Generate(30, 10).Print(None)
+
+    PrintLabirinth(labirinth, None)
