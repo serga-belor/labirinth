@@ -296,13 +296,11 @@ if __name__ == "__main__":
     #         Cell.Create(False, False, True, True), Cell.Create(True, True, True, False)
     #     ]
     # ).Print(None)
-    labirinth = Labirinth(
+    PrintLabirinth(Labirinth(
         2, 2,
         [
             Cell.Create(True, False, True, True), Cell.Create(True, True, False, False),
             Cell.Create(True, False, True, True), Cell.Create(False, True, True, False)
         ]
-    )
+    ), None)
     # Labirinth.Generate(30, 10).Print(None)
-
-    PrintLabirinth(labirinth, None)
