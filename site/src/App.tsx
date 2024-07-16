@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const App: React.FC = () => {
     const [data, setData] = useState<{ message: string; status: string } | null>(null);
 
     useEffect(() => {
-        axios.get('/data')
+        axios.get("/data")
             .then(response => {
                 setData(response.data);
             })
             .catch(error => {
-                console.error('Error fetching the data:', error);
+                console.error("Error fetching the data:", error);
             });
     }, []);
 

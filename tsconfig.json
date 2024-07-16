@@ -31,7 +31,8 @@
     "noImplicitReturns": true,
   },
   "include": [
-    "site/src/*.ts*"
+    "site/src/*.ts",
+    "site/src/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

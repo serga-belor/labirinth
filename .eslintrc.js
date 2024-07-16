@@ -10,7 +10,8 @@ module.exports = {
         "ecmaFeatures": {
             "jsx": true
         },
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": ["@typescript-eslint"],
     "extends": [
@@ -18,7 +19,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "indent": ["error", "tab"],
+        "indent": ["error", 4],
         "linebreak-style": ["error", "windows"],
         "quotes": [ "error", "double"],
         "@typescript-eslint/quotes": ["error", "double"],
@@ -27,5 +28,5 @@ module.exports = {
         "eol-last": ["error", "always"],
         "no-multiple-empty-lines": ["error", { "max": 1 }],
         "comma-dangle": ["error", "never"]
-      }
+    }
 };
