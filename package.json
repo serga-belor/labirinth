@@ -4,8 +4,10 @@
   "description": "labirinth projects",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT License",
   "scripts": {
+    "build-site": "tsc --build  site/tsconfig.json --verbose",
+    "build-site-1": "tsc --build --project site/tsconfig.json --verbose",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

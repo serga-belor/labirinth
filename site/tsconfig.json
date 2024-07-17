@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2015",
+    "rootDir": "./src",
+    "outDir": "./public",
     "lib": [
       "dom",
       "dom.iterable",
@@ -15,7 +17,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
     "noImplicitAny": true,
@@ -31,8 +32,8 @@
     "noImplicitReturns": true,
   },
   "include": [
-    "site/src/*.ts",
-    "site/src/*.tsx"
+    "src/*.ts",
+    "src/*.tsx"
   ],
   "exclude": ["node_modules"]
 }
