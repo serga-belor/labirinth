@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "rootDir": "./src",
     "outDir": "./public",
     "lib": [
       "dom",
@@ -32,6 +31,7 @@
     "noImplicitReturns": true,
   },
   "include": [
+    "webpack.config.js",
     "src/*.ts",
     "src/*.tsx"
   ],
