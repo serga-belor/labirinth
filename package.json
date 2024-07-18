@@ -6,9 +6,7 @@
   "author": "",
   "license": "MIT License",
   "scripts": {
-    "build-site": "tsc --build  site/tsconfig.json --verbose",
-    "build-site-1": "tsc --build --project site/tsconfig.json --verbose",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "site-build": "webpack --config ./site/webpack.config.js"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
@@ -19,8 +17,12 @@
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
     "eslint-plugin-react": "^7.34.4",
+    "ts-loader": "^9.5.1",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0"
+    "typescript-eslint": "^7.16.0",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "axios": "^1.7.2",
