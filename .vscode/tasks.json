@@ -3,19 +3,17 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "site-start",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: site-start",
-			"detail": "cd ./site & webpack server --open"
-		},
-		{
-			"type": "npm",
 			"script": "server-start",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "npm: server-start",
-			"detail": "cd ./server/python & python server.py"
+			"label": "Start Server"
+		},
+		{
+			"type": "npm",
+			"script": "site-start",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Build Site"
 		}
 	]
 }

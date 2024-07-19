@@ -29,15 +29,5 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/index.html"
         })
-    ],
-    devServer: {
-        compress: true,
-        port: 9000,
-        proxy: [
-            {
-                context: ["/data"],
-                target: "http://localhost:5000"
-            }
-        ]
-    }
+    ]
 };

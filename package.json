@@ -7,7 +7,6 @@
   "license": "MIT License",
   "scripts": {
     "server-start": "cd ./server/python & python server.py",
-    "site-start": "cd ./site & webpack server --open",
     "site-build": "cd ./site & webpack"
   },
   "devDependencies": {
