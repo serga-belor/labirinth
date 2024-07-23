@@ -18,14 +18,16 @@ const App: React.FC = () => {
         <div className="App">
             <header className="App-header">
                 <h1>React + Flask Example</h1>
-                {data ? (
+                {data
+                    ?
                     <div>
-                        <p>Message: {data.message}</p>
+                        <p>Message:</p>
+                        <pre>{data.message}</pre>
                         <p>Status: {data.status}</p>
                     </div>
-                ) : (
-                    <p>Loading...</p>
-                )}
+
+                    : <p>Loading...</p>
+                }
             </header>
         </div>
     );

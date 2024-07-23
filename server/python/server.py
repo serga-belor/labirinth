@@ -1,5 +1,9 @@
+from labirinth import Labirinth, Cell
+from labirinth import PrintLabirinth
+
 from flask import Flask, send_from_directory, jsonify
 import os
+
 
 site_dir_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'site', 'public')
 print("Site folder:", site_dir_path)
@@ -16,8 +20,10 @@ def serve_resource(filename):
 
 @app.route('/data', methods=['GET'])
 def get_data():
+    labirinth_str = PrintLabirinth(Labirinth.Generate(5, 5), (0, 0))
+
     data = {
-        'message': 'Hello, this is your JSON data!',
+        'message': 'Hello, this is your JSON data:\n' + labirinth_str,
         'status': 'success'
     }
     return jsonify(data)
