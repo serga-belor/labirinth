@@ -10,7 +10,7 @@
 		},
 		{
 			"type": "npm",
-			"script": "site-start",
+			"script": "site-build",
 			"group": "build",
 			"problemMatcher": [],
 			"label": "Build Site"
