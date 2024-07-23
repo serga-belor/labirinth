@@ -10,10 +10,10 @@
 		},
 		{
 			"type": "npm",
-			"script": "site-build",
+			"script": "site-build-watch",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "Build Site"
+			"label": "Build & Watch Site"
 		}
 	]
 }

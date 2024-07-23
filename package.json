@@ -7,7 +7,7 @@
   "license": "MIT License",
   "scripts": {
     "server-start": "cd ./server/python & python server.py",
-    "site-build": "cd ./site & webpack"
+    "site-build-watch": "cd ./site & webpack --watch"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
