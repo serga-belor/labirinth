@@ -1,3 +1,15 @@
+# server uses python
+
+# site uaess Webpack + TypeScript + React
+## Install build tools
+npm install -g webpack webpack-cli
+
+# Before build
+npm update
+
+# site address
+http://localhost:5000/
+
 # labirinth
 labirinth projects
 
