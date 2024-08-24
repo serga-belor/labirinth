@@ -219,10 +219,11 @@ class Labirinth:
 
 def PrintLabirinth(labirinth: Labirinth,
                    active_cell_coord: Optional[Labirinth.CoordType]
-                   ) -> None:
+                   ) -> str:
     labirinth_dim: Final = labirinth.Dimension()
     labirinth_width: Final = labirinth_dim[0]
     labirinth_height: Final = labirinth_dim[1]
+    out = ""
     for y in range(0, labirinth_height):
         line1 = ""
         line2 = ""
@@ -230,8 +231,7 @@ def PrintLabirinth(labirinth: Labirinth,
         for x in range(0, labirinth_width):
             cell_this = labirinth.GetCell((x, y))
             if cell_this is None:
-                print(f"Labirint is broken, cannot get cell: {x}, {y}")
-                return
+                return f"Labirint is broken, cannot get cell: {x}, {y}"
 
             cell_up = labirinth.GetCell((x, y - 1))
             cell_right = labirinth.GetCell((x + 1, y))
@@ -275,10 +275,11 @@ def PrintLabirinth(labirinth: Labirinth,
             if cell_down is None:
                 line3 += "\u2580" * width
 
-        print(line1)
-        print(line2)
+        out += line1 + "\n"
+        out += line2 + "\n"
         if line3:
-            print(line3)
+            out += line3 + "\n"
+    return out
 
 
 if __name__ == "__main__":

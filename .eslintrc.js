@@ -11,7 +11,7 @@ module.exports = {
             "jsx": true
         },
         "sourceType": "module",
-        "project": "./tsconfig.json"
+        "project": "./site/tsconfig.json"
     },
     "plugins": ["@typescript-eslint"],
     "extends": [
