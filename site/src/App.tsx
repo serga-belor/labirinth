@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+interface GetDataServerResponse {
+    message: string;
+    status: string
+}
+
 const App: React.FC = () => {
-    const [data, setData] = useState<{ message: string; status: string } | null>(null);
+    const [data, setData] = useState<GetDataServerResponse | null>(null);
 
     useEffect(() => {
-        axios.get("/data")
-            .then(response => {
+        try {
+            (async () => {
+                const response = await axios.get("/data");
                 setData(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching the data:", error);
-            });
+            })();
+        } catch(e) {
+            console.error("Error fetching the data:", e);
+        }
     }, []);
 
     return (
