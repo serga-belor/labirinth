@@ -1,3 +1,5 @@
+export { App };
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -23,20 +25,18 @@ const App: React.FC = () => {
     return (
         <div className="App">
             <header className="App-header">
-                <h1>React + Flask Example</h1>
-                {data
-                    ?
-                    <div>
-                        <p>Message:</p>
-                        <pre>{data.message}</pre>
-                        <p>Status: {data.status}</p>
-                    </div>
-
-                    : <p>Loading...</p>
-                }
+                <h1>Labirinth</h1>
             </header>
+            {data
+                ?
+                <div>
+                    <p>Message:</p>
+                    <pre>{data.message}</pre>
+                    <p>Status: {data.status}</p>
+                </div>
+
+                : <p>Loading...</p>
+            }
         </div>
     );
 };
-
-export default App;
