@@ -1,6 +1,6 @@
 export { App };
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 interface GetDataServerResponse {
@@ -11,16 +11,13 @@ interface GetDataServerResponse {
 const App: React.FC = () => {
     const [data, setData] = useState<GetDataServerResponse | null>(null);
 
-    useEffect(() => {
+    (async () => {
         try {
-            (async () => {
-                const response = await axios.get("/data");
-                setData(response.data);
-            })();
+            setData(await LoadFromServer());
         } catch(e) {
             console.error("Error fetching the data:", e);
         }
-    }, []);
+    })();
 
     return (
         <div className="App">
@@ -40,3 +37,7 @@ const App: React.FC = () => {
         </div>
     );
 };
+
+async function LoadFromServer(): Promise<GetDataServerResponse>  {
+    return (await axios.get("/data")).data;
+}
