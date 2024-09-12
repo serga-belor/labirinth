@@ -25,7 +25,7 @@ module.exports = {
         "semi": ["error", "always"],
         "no-trailing-spaces": "error",
         "eol-last": ["error", "always"],
-        "no-multiple-empty-lines": ["error", { "max": 1 }],
+        "no-multiple-empty-lines": ["error", { "max": 2 }],
         "comma-dangle": ["error", "never"]
     }
 };
