@@ -18,7 +18,7 @@ def index():
 def serve_resource(filename):
     return send_from_directory(app.static_folder, filename)
 
-@app.route('/data', methods=['GET'])
+@app.route('/test', methods=['GET'])
 def get_data():
     labirinth_str = PrintLabirinth(Labirinth.Generate(5, 5), (0, 0))
 
