@@ -1,3 +1,5 @@
+from typing import Final
+
 from labirinth import Labirinth, Cell
 from labirinth import PrintLabirinth
 
@@ -18,13 +20,22 @@ def index():
 def serve_resource(filename):
     return send_from_directory(app.static_folder, filename)
 
-@app.route('/test', methods=['GET'])
+width: Final = 5
+height: Final = 5
+labitinth_counter = 0
+
+@app.route('/get-labirinth', methods=['GET'])
 def get_data():
-    labirinth_str = PrintLabirinth(Labirinth.Generate(5, 5), (0, 0))
+    labirinth = Labirinth.Generate(width, height)
+    #labitinth_counter += 1
 
     data = {
-        'message': 'Hello, this is your JSON data:\n' + labirinth_str,
-        'status': 'success'
+        "id": f"{labitinth_counter}",
+        "width": f"{width}",
+        "height": f"{height}",
+        "cells": list(labirinth.Cells()),
+        "test": PrintLabirinth(labirinth, (0, 0)),
+        "status": "success"
     }
     return jsonify(data)
 

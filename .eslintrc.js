@@ -19,7 +19,6 @@ module.exports = {
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "indent": ["error", 4],
         "quotes": [ "error", "double"],
         "@typescript-eslint/quotes": ["error", "double"],
         "semi": ["error", "always"],

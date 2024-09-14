@@ -5,10 +5,10 @@ import random
 
 class Walls(IntEnum):
     NONE = 0
-    TOP = 0x1000
-    RIGHT = 0x0100
-    BOTTOM = 0x0010
-    LEFT = 0x0001
+    TOP = 0x01
+    RIGHT = 0x02
+    BOTTOM = 0x04
+    LEFT = 0x08
     ALL = TOP | RIGHT| BOTTOM | LEFT
 
 class Cell:
@@ -180,6 +180,10 @@ class Labirinth:
     def Dimension(self) -> tuple[int, int]:
         """Get dimension of the labirinth [width, height]"""
         return (self._width, self._height)
+    
+    def Cells(self) -> tuple[int, ...]:
+        """Get list of cells"""
+        return tuple(item.GetWalls() for item in self._cells)
 
     def GetCell(self, coord: CoordType) -> Optional[Cell]:
         """Get a labirinth cell by coordinates"""
