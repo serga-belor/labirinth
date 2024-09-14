@@ -38,8 +38,7 @@ const App: React.FC = () => {
             {m_labirinth
                 ?
                 <div>
-                    <p>Labirinth:</p>
-                    <p>{m_labirinth.width}:{m_labirinth.height}</p>
+                    <p>#{m_labirinth.id}, {m_labirinth.width}:{m_labirinth.height}</p>
                     <Labirinth value={m_labirinth} OnClick={() => {}}/>
                     <pre>{m_labirinth.test}</pre>
                     <p>Status: {m_labirinth.status}</p>
@@ -79,7 +78,7 @@ function Labirinth(params: LabirinthParams
     ];
 
     const labirinth =
-        <table className="labirinth">
+        <table className="labirinth"><tbody>
             {params.value.cells.reduce((acc: {rows: JSX.Element[], cur_row: JSX.Element[]}, cell, idx) => {
                 const border_class_name =
                     wall_to_class_name.reduce((acc, wall_to_class) => {
@@ -100,7 +99,7 @@ function Labirinth(params: LabirinthParams
                     // first cell
                     acc.cur_row.push(td);
                 } else if(idx === params.value.cells.length-1) {
-                    // lastc cell
+                    // last cell
                     acc.cur_row.push(td);
                     acc.rows.push(
                         <tr key={`row${idx}`}>{acc.cur_row}</tr>
@@ -116,7 +115,7 @@ function Labirinth(params: LabirinthParams
                 }
                 return acc;
             }, {rows: [], cur_row: []}).rows}
-        </table>;
+        </tbody></table>;
 
     return labirinth;
 }

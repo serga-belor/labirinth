@@ -27,7 +27,8 @@ labitinth_counter = 0
 @app.route('/get-labirinth', methods=['GET'])
 def get_data():
     labirinth = Labirinth.Generate(width, height)
-    #labitinth_counter += 1
+    global labitinth_counter
+    labitinth_counter += 1
 
     data = {
         "id": f"{labitinth_counter}",
