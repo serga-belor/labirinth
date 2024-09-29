@@ -89,7 +89,7 @@ function Labirinth(params: LabirinthParams
                         }
                     }, "");
 
-                const td =
+                const td_el =
                     <td className={AppendClassName("labirinth-cell", border_class_name)}
                         onClick={() => params.OnClick(idx)}
                         key={`cell${idx}`}
@@ -97,10 +97,11 @@ function Labirinth(params: LabirinthParams
 
                 if(idx === 0) {
                     // first cell
-                    acc.cur_row.push(td);
+                    acc.cur_row.push(td_el);
+
                 } else if(idx === params.value.cells.length-1) {
                     // last cell
-                    acc.cur_row.push(td);
+                    acc.cur_row.push(td_el);
                     acc.rows.push(
                         <tr key={`row${idx}`}>{acc.cur_row}</tr>
                     );
@@ -109,9 +110,10 @@ function Labirinth(params: LabirinthParams
                     acc.rows.push(
                         <tr key={`row${idx}`}>{acc.cur_row}</tr>
                     );
-                    acc.cur_row = [td];
+                    acc.cur_row = [td_el];
+
                 } else {
-                    acc.cur_row.push(td);
+                    acc.cur_row.push(td_el);
                 }
                 return acc;
             }, {rows: [], cur_row: []}).rows}
