@@ -3,7 +3,7 @@
 export { App };
 
 
-import { Labirinth, LabitinthInfo } from "./labirinth";
+import { Labirinth, LabitinthInfo, SetCurrent } from "./labirinth";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -44,7 +44,16 @@ const App: React.FC = () => {
                 ?
                 <div>
                     <p>#{m_labirinth.id}, {m_labirinth.width}:{m_labirinth.height}</p>
-                    <Labirinth value={m_labirinth} OnClick={() => {}}/>
+                    <Labirinth
+                        value={m_labirinth}
+                        OnClick={(idx) => {
+                            SetLabirinth({
+                                ...m_labirinth,
+                                cells: m_labirinth.cells.map((cell, i) => {
+                                    return SetCurrent(cell, i === idx);
+                                })
+                            });
+                    }}/>
                     {/*<Controls />*/}
                     <pre>{m_labirinth.test}</pre>
                     <p>Status: {m_labirinth.status}</p>

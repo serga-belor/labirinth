@@ -1,6 +1,8 @@
 // Copyright Sergei Belorusets, 2024
 
 export { Labirinth };
+export { SetCurrent };
+
 export type { LabitinthInfo };
 
 
@@ -36,14 +38,19 @@ function Labirinth(params: LabirinthParams
                 const border_class_name =
                     wall_to_class_name.reduce((acc, wall_to_class) => {
                         if(HasWall(cell, wall_to_class[0])) {
-                            return AppendClassName(acc, wall_to_class[1]);
+                            return AppendClassName(acc, [wall_to_class[1]]);
                         } else {
                             return acc;
                         }
                     }, "");
 
+                const status_class_name =
+                        IsCurrent(cell)
+                            ? "current"
+                            : "";
+
                 const td_el =
-                    <td className={AppendClassName("labirinth-cell", border_class_name)}
+                    <td className={AppendClassName("labirinth-cell", [border_class_name, status_class_name])}
                         onClick={() => params.OnClick(idx)}
                         key={`cell${idx}`}
                     />;
@@ -81,11 +88,27 @@ const enum CellWalls {
     bottom = 0x04,
     left = 0x08,
 }
+const enum CellStatus {
+    current = 0x10,
+}
 
 function HasWall(cell: number,
                  wall: CellWalls
                  ): boolean
 {
-    const check = (cell & wall) === wall;
-    return check;
+    return (cell & wall) === wall;
+}
+
+function IsCurrent(cell: number): boolean
+{
+    return (cell & CellStatus.current) === CellStatus.current;
+}
+
+function SetCurrent(cell: number,
+                    current: boolean
+                    ): number
+{
+    return current
+            ? cell | CellStatus.current
+            : cell & ~CellStatus.current;
 }

@@ -4,13 +4,16 @@ export { AppendClassName };
 
 
 function AppendClassName(to: string,
-                         class_name: string
+                         class_names: string[]
                         ): string
 {
-    if(to) {
-        return to + " " + class_name;
+    return class_names.reduce(
+        (result, class_name) => {
+            if(result) {
+                return  result + " " + class_name;
 
-    } else {
-        return class_name;
-    }
+            } else {
+                return class_name;
+            }
+        }, to);
 }
