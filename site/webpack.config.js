@@ -1,6 +1,8 @@
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 module.exports = {
     mode: "development",
@@ -29,6 +31,11 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: "./src/index.html"
+        }),
+        new FaviconsWebpackPlugin({
+            logo: "./src/favicon.svg", // path to your favicon image
+            cache: true, // enable caching to improve performance
+            inject: true // inject into HTML
         })
     ]
 };
