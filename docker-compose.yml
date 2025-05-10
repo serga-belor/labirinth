@@ -1,0 +1,18 @@
+version: 'v2.34.0-desktop.1'
+services:
+  server:
+    build: ./server
+    container_name: labirinth-server
+    ports:
+      - "3001:5000"
+    volumes:
+      - ./server:/app  # For live reloading during development (optional)
+  # client:
+  #   build: ./client
+  #   container_name: client
+  #   ports:
+  #     - "3000:3000"   # Map port 3000 to 3000 on host
+  #   volumes:
+  #     - ./client:/app  # Mount code for hot-reloading if you have a dev server setup
+  #   stdin_open: true
+  #   tty: true

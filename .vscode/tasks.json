@@ -10,10 +10,13 @@
 		},
 		{
 			"type": "npm",
-			"script": "site-build-watch",
+			"script": "build",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "Build & Watch Site"
+			"label": "Build Site",
+			"options": {
+				"cwd": "${workspaceFolder}/site"
+			}
 		}
 	]
 }

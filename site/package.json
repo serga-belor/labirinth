@@ -1,13 +1,12 @@
 {
   "name": "labirinth",
   "version": "1.0.0",
-  "description": "labirinth projects",
+  "description": "labirinth site",
   "keywords": [],
   "author": "",
   "license": "MIT License",
   "scripts": {
-    "server-start": "cd ./server/python & python server.py",
-    "site-build-watch": "cd ./site & webpack --watch"
+    "build": "webpack"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",

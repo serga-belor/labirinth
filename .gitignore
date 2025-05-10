@@ -1,8 +1,18 @@
-/.venv/
-**/python/__pycache__/
+# Python
+.venv/
+.mypy_cache/
+.pytest_cache/
+__pycache__
+*.pyc
 
-/node_modules/
-
+# Node
+node_modules/
 package-lock.json
 
+# Docker
+*.log
+docker-compose.override.yml
+
+# Projects
 /site/public/*
+/site/public-old/*

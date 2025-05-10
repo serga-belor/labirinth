@@ -1,4 +1,4 @@
-// Copyright Sergei Belorusets, 2024
+// Copyright Sergei Belorusets, 2024-2025
 
 export { AppendClassName };
 

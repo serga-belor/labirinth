@@ -10,6 +10,24 @@ npm update
 # site address
 http://localhost:5000/
 
+# Project structure
+project-root/
+├── server/                   # Python HTTP server
+│   ├── [<...>.py]            # Python code of the server
+│   ├── requirements.txt      # Python dependencies
+│   └── Dockerfile            # Container for the Python server
+├── site/                     # TypeScript/HTML app
+│   ├── src/
+│   │   └── [...]             # TypeScript code of the site
+│   ├── public/               # Static assets (HTML, CSS, images)
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── webpack.config.js
+│   └── Dockerfile            # Build container for the client
+├── docker-compose.yml        # Compose file to run both services together
+└── .gitignore                # Exclude build artifacts, node_modules, etc.
+
+
 # labirinth
 labirinth projects
 

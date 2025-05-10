@@ -7,10 +7,17 @@ from flask import Flask, send_from_directory, jsonify
 import os
 
 
-site_dir_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'site', 'public')
-print("Site folder:", site_dir_path)
+public_dir_path = os.path.join(os.path.dirname(__file__), 'public')
+print("Public folder:", public_dir_path)
 
-app = Flask(__name__, static_folder=site_dir_path)
+app = Flask(__name__, static_folder=public_dir_path)
+
+@app.route('/test', methods=['GET'])
+def test():
+    data = {
+        "test": "this is test",
+    }
+    return jsonify(data)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -25,7 +32,7 @@ height: Final = 5
 labitinth_counter = 0
 
 @app.route('/get-labirinth', methods=['GET'])
-def get_data():
+def get_labirinth():
     labirinth = Labirinth.Generate(width, height)
     global labitinth_counter
     labitinth_counter += 1
@@ -41,4 +48,5 @@ def get_data():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+    print("Labirinth server started")
