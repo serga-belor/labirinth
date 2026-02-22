@@ -1,7 +1,7 @@
 from typing import Final
 
-from labirinth import Labirinth, Cell
-from labirinth import PrintLabirinth
+from labyrinth import Labyrinth, Cell
+from labyrinth import PrintLabyrinth
 
 from flask import Flask, send_from_directory, jsonify
 import os
@@ -29,24 +29,24 @@ def serve_resource(filename):
 
 width: Final = 5
 height: Final = 5
-labitinth_counter = 0
+labytinth_counter = 0
 
-@app.route('/get-labirinth', methods=['GET'])
-def get_labirinth():
-    labirinth = Labirinth.Generate(width, height)
-    global labitinth_counter
-    labitinth_counter += 1
+@app.route('/get-labyrinth', methods=['GET'])
+def get_labyrinth():
+    labyrinth = Labyrinth.Generate(width, height)
+    global labytinth_counter
+    labytinth_counter += 1
 
     data = {
-        "id": f"{labitinth_counter}",
+        "id": f"{labytinth_counter}",
         "width": f"{width}",
         "height": f"{height}",
-        "cells": list(labirinth.Cells()),
-        "test": PrintLabirinth(labirinth, (0, 0)),
+        "cells": list(labyrinth.Cells()),
+        "test": PrintLabyrinth(labyrinth, (0, 0)),
         "status": "success"
     }
     return jsonify(data)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
-    print("Labirinth server started")
+    print("Labyrinth server started")

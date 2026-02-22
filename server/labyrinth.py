@@ -1,3 +1,5 @@
+# Copyright Sergei Belorusets, 2024-2026
+
 from typing import Final, Dict, List, Optional, Set
 from enum import Enum, IntEnum
 import random
@@ -44,7 +46,7 @@ class Cell:
 
 
 
-class Labirinth:
+class Labyrinth:
     # Coordinate of a cell in a matrix
     # [column, row]
     CoordType = tuple[int, int]
@@ -60,11 +62,11 @@ class Labirinth:
         LEFT = 4
 
     @classmethod
-    def Create(cls, width: int, height: int, initial: Cell) -> "Labirinth":
+    def Create(cls, width: int, height: int, initial: Cell) -> "Labyrinth":
         return cls(width, height, [initial] * width * height)
 
     @classmethod
-    def Generate(cls, width: int, height: int) -> "Labirinth":
+    def Generate(cls, width: int, height: int) -> "Labyrinth":
         """Generate random connected labirinth with specified dimensions"""
 
         # fill up the list of cells with non-connected cells
@@ -75,7 +77,7 @@ class Labirinth:
         free_cells: set[int] = {i for i in range(width * height)}
 
         # cells that are a candidate to connect with already connected cell
-        candidates: list[Labirinth._ConnectCandidateType] = list()
+        candidates: list[Labyrinth._ConnectCandidateType] = list()
 
         def _AddFreeNeighboursAsCandidate(cell_idx: int) -> None:
             cell_coord = cls.CoordByIndex(cell_idx, width)
@@ -155,14 +157,14 @@ class Labirinth:
         return cls(width, height, cells)
 
     @staticmethod
-    def CoordByIndex(index: int, width: int) -> "Labirinth.CoordType":
+    def CoordByIndex(index: int, width: int) -> "Labyrinth.CoordType":
         """Return coordinates by index"""
         y = index // width
         x = index - ( width * y)
         return (x, y)
 
     @staticmethod
-    def IndexByCoord(coord: "Labirinth.CoordType", width: int, height: int) -> Optional[int]:
+    def IndexByCoord(coord: "Labyrinth.CoordType", width: int, height: int) -> Optional[int]:
         """Return index by coordinates"""
         x = coord[0] 
         if x < 0 or x >= width:
@@ -199,48 +201,48 @@ class Labirinth:
         if not cell:
             return None
 
-        if direction == Labirinth.Directions.UP:
+        if direction == Labyrinth.Directions.UP:
             if cell.HaveWall(Walls.TOP):
                 return None
             return self.GetCell((coord[0], coord[1]-1))
 
-        if direction == Labirinth.Directions.RIGHT:
+        if direction == Labyrinth.Directions.RIGHT:
             if cell.HaveWall(Walls.RIGHT):
                 return None
             return self.GetCell((coord[0]+1, coord[1]))
 
-        if direction == Labirinth.Directions.DOWN:
+        if direction == Labyrinth.Directions.DOWN:
             if cell.HaveWall(Walls.BOTTOM):
                 return None
             return self.GetCell((coord[0], coord[1]+1))
 
-        if direction == Labirinth.Directions.LEFT:
+        if direction == Labyrinth.Directions.LEFT:
             if cell.HaveWall(Walls.LEFT):
                 return None
             return self.GetCell((coord[0]-1, coord[1]))
         raise ValueError("Unknown direction: {}".format(direction))
 
 
-def PrintLabirinth(labirinth: Labirinth,
-                   active_cell_coord: Optional[Labirinth.CoordType]
+def PrintLabyrinth(labyrinth: Labyrinth,
+                   active_cell_coord: Optional[Labyrinth.CoordType]
                    ) -> str:
-    labirinth_dim: Final = labirinth.Dimension()
-    labirinth_width: Final = labirinth_dim[0]
-    labirinth_height: Final = labirinth_dim[1]
+    labyrinth_dim: Final = labyrinth.Dimension()
+    labyrinth_width: Final = labyrinth_dim[0]
+    labyrinth_height: Final = labyrinth_dim[1]
     out = ""
-    for y in range(0, labirinth_height):
+    for y in range(0, labyrinth_height):
         line1 = ""
         line2 = ""
         line3 = ""
-        for x in range(0, labirinth_width):
-            cell_this = labirinth.GetCell((x, y))
+        for x in range(0, labyrinth_width):
+            cell_this = labyrinth.GetCell((x, y))
             if cell_this is None:
-                return f"Labirint is broken, cannot get cell: {x}, {y}"
+                return f"Labyrint is broken, cannot get cell: {x}, {y}"
 
-            cell_up = labirinth.GetCell((x, y - 1))
-            cell_right = labirinth.GetCell((x + 1, y))
-            cell_down = labirinth.GetCell((x, y + 1))
-            cell_left = labirinth.GetCell((x - 1, y))
+            cell_up = labyrinth.GetCell((x, y - 1))
+            cell_right = labyrinth.GetCell((x + 1, y))
+            cell_down = labyrinth.GetCell((x, y + 1))
+            cell_left = labyrinth.GetCell((x - 1, y))
             width = 4 if cell_right is None else 3
             if cell_up is None:
                 line1 += "\u2584" * width
@@ -301,7 +303,7 @@ if __name__ == "__main__":
     #         Cell.Create(False, False, True, True), Cell.Create(True, True, True, False)
     #     ]
     # ).Print(None)
-    PrintLabirinth(Labirinth(
+    PrintLabyrinth(Labyrinth(
         2, 2,
         [
             Cell.Create(True, False, True, True), Cell.Create(True, True, False, False),

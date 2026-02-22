@@ -1,15 +1,15 @@
-// Copyright Sergei Belorusets, 2024-2025
+// Copyright Sergei Belorusets, 2024-2026
 
-export { Labirinth };
+export { Labyrinth };
 export { SetCurrent };
 
-export type { LabitinthInfo };
+export type { LabyrinthInfo };
 
 
 import { AppendClassName } from "./utils";
 
 
-interface LabitinthInfo {
+interface LabyrinthInfo {
     readonly id: number;
     readonly width: number;
     readonly height: number;
@@ -18,11 +18,11 @@ interface LabitinthInfo {
     readonly status: string;
 }
 
-interface LabirinthParams {
-    readonly value: LabitinthInfo;
+interface LabyrinthParams {
+    readonly value: LabyrinthInfo;
     readonly OnClick: (idx: number) => void;
 }
-function Labirinth(params: LabirinthParams
+function Labyrinth(params: LabyrinthParams
                    ): JSX.Element
 {
     const wall_to_class_name: readonly (readonly[CellWalls, string])[] = [
@@ -32,8 +32,8 @@ function Labirinth(params: LabirinthParams
         [CellWalls.left, "wall-left"]
     ];
 
-    const labirinth =
-        <table className="labirinth"><tbody>
+    const labyrinth =
+        <table className="labyrinth"><tbody>
             {params.value.cells.reduce((acc: {rows: JSX.Element[], cur_row: JSX.Element[]}, cell, idx) => {
                 const border_class_name =
                     wall_to_class_name.reduce((acc, wall_to_class) => {
@@ -50,7 +50,7 @@ function Labirinth(params: LabirinthParams
                             : "";
 
                 const td_el =
-                    <td className={AppendClassName("labirinth-cell", [border_class_name, status_class_name])}
+                    <td className={AppendClassName("labyrinth-cell", [border_class_name, status_class_name])}
                         onClick={() => params.OnClick(idx)}
                         key={`cell${idx}`}
                     />;
@@ -79,7 +79,7 @@ function Labirinth(params: LabirinthParams
             }, {rows: [], cur_row: []}).rows}
         </tbody></table>;
 
-    return labirinth;
+    return labyrinth;
 }
 
 const enum CellWalls {

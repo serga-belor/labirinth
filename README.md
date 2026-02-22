@@ -1,4 +1,4 @@
-# server uses python
+﻿# server uses python
 
 # site uaess Webpack + TypeScript + React
 ## Install build tools
@@ -28,8 +28,8 @@ project-root/
 └── .gitignore                # Exclude build artifacts, node_modules, etc.
 
 
-# labirinth
-labirinth projects
+# labyrinth
+labyrinth projects
 
 /**
  * Лабиринт - это матрица ячеек M x N.

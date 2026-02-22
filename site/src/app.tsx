@@ -1,16 +1,16 @@
-// Copyright Sergei Belorusets, 2024-2025
+// Copyright Sergei Belorusets, 2024-2026
 
 export { App };
 
 
-import { Labirinth, LabitinthInfo, SetCurrent } from "./labirinth";
+import { Labyrinth, LabyrinthInfo, SetCurrent } from "./labyrinth";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
 const App: React.FC = () => {
-    const [m_labirinth, SetLabirinth] = useState<LabitinthInfo | null>(null);
+    const [m_labyrinth, SetLabirinth] = useState<LabyrinthInfo | null>(null);
 
     useEffect(() => {
         let stopped = false;
@@ -19,12 +19,12 @@ const App: React.FC = () => {
                 if(stopped) {
                     return;
                 }
-                const labirinth = await LoadLagirinthFromServer();
+                const labyrinth = await LoadLabyrinthFromServer();
                 if(stopped) {
                     return;
                 }
-                console.log(`Labirinth: ${labirinth.cells}`);
-                SetLabirinth(labirinth);
+                console.log(`Labyrinth: ${labyrinth.cells}`);
+                SetLabirinth(labyrinth);
             } catch(e) {
                 console.error("Error fetching the data:", e);
             }
@@ -40,23 +40,23 @@ const App: React.FC = () => {
             <header className="app-header">
                 <h1>Labirinth</h1>
             </header>
-            {m_labirinth
+            {m_labyrinth
                 ?
                 <div>
-                    <p>#{m_labirinth.id}, {m_labirinth.width}:{m_labirinth.height}</p>
-                    <Labirinth
-                        value={m_labirinth}
+                    <p>#{m_labyrinth.id}, {m_labyrinth.width}:{m_labyrinth.height}</p>
+                    <Labyrinth
+                        value={m_labyrinth}
                         OnClick={(idx) => {
                             SetLabirinth({
-                                ...m_labirinth,
-                                cells: m_labirinth.cells.map((cell, i) => {
+                                ...m_labyrinth,
+                                cells: m_labyrinth.cells.map((cell, i) => {
                                     return SetCurrent(cell, i === idx);
                                 })
                             });
                     }}/>
                     {/*<Controls />*/}
-                    <pre>{m_labirinth.test}</pre>
-                    <p>Status: {m_labirinth.status}</p>
+                    <pre>{m_labyrinth.test}</pre>
+                    <p>Status: {m_labyrinth.status}</p>
                 </div>
 
                 : <p>Loading...</p>
@@ -65,6 +65,6 @@ const App: React.FC = () => {
     );
 };
 
-async function LoadLagirinthFromServer(): Promise<LabitinthInfo>  {
-    return (await axios.get("/get-labirinth")).data;
+async function LoadLabyrinthFromServer(): Promise<LabyrinthInfo>  {
+    return (await axios.get("/get-labyrinth")).data;
 }

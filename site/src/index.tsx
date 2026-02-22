@@ -1,3 +1,5 @@
+// Copyright Sergei Belorusets, 2024-2026
+
 import { App } from "./app";
 
 import ReactDOM from "react-dom/client";
