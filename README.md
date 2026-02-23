@@ -1,7 +1,7 @@
 ﻿# Labyrinth
 
 This project contains a maze generator with:
-- a Python backend server
+- a Node.js backend server written in TypeScript
 - a frontend built with Webpack, TypeScript, and React
 
 ## Install build tools
@@ -15,15 +15,17 @@ npm update
 ```
 
 ## Site address
-`http://localhost:5000/`
+`http://localhost:3001/`
 
 ## Project structure
 ```text
 project-root/
-├── server/                   # Python HTTP server
-│   ├── [<...>.py]            # Python server code
-│   ├── requirements.txt      # Python dependencies
-│   └── Dockerfile            # Container for the Python server
+├── server/                   # Node.js + TypeScript HTTP server
+│   ├── src/
+│   │   └── [...]             # TypeScript server code
+│   ├── package.json          # Node dependencies and scripts
+│   ├── tsconfig.json         # TypeScript config for server build
+│   └── Dockerfile            # Container for the Node server
 ├── site/                     # TypeScript/HTML app
 │   ├── src/
 │   │   └── [...]             # TypeScript source code

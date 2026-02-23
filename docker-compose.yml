@@ -5,8 +5,6 @@ services:
     container_name: labyrinth-server
     ports:
       - "3001:5000"
-    volumes:
-      - ./server:/app  # For live reloading during development (optional)
   # client:
   #   build: ./client
   #   container_name: client

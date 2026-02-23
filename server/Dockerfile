@@ -1,16 +1,19 @@
-FROM python:3.13-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
-#Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-#Copy the server files
-COPY . .
+# Copy source and static files
+COPY src ./src
+COPY public ./public
+COPY tsconfig.json ./
 
-# Expose the port your server listens on
+# Build and run
+RUN npm run build
+
 EXPOSE 5000
 
-# Start the server
-CMD ["python", "server.py"]
+CMD ["npm", "start"]
