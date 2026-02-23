@@ -14,5 +14,6 @@ package-lock.json
 docker-compose.override.yml
 
 # Projects
-/site/public/*
-/site/public-old/*
+site/public/*
+site/public-old/*
+server/public/*

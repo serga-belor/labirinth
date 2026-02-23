@@ -1,57 +1,69 @@
-﻿# server uses python
+﻿# Labyrinth
 
-# site uaess Webpack + TypeScript + React
+This project contains a maze generator with:
+- a Python backend server
+- a frontend built with Webpack, TypeScript, and React
+
 ## Install build tools
+```bash
 npm install -g webpack webpack-cli
+```
 
-# Before build
+## Before build
+```bash
 npm update
+```
 
-# site address
-http://localhost:5000/
+## Site address
+`http://localhost:5000/`
 
-# Project structure
+## Project structure
+```text
 project-root/
 ├── server/                   # Python HTTP server
-│   ├── [<...>.py]            # Python code of the server
+│   ├── [<...>.py]            # Python server code
 │   ├── requirements.txt      # Python dependencies
 │   └── Dockerfile            # Container for the Python server
 ├── site/                     # TypeScript/HTML app
 │   ├── src/
-│   │   └── [...]             # TypeScript code of the site
+│   │   └── [...]             # TypeScript source code
 │   ├── public/               # Static assets (HTML, CSS, images)
 │   ├── package.json
 │   ├── tsconfig.json
 │   ├── webpack.config.js
 │   └── Dockerfile            # Build container for the client
-├── docker-compose.yml        # Compose file to run both services together
+├── docker-compose.yml        # Compose file to run services
 └── .gitignore                # Exclude build artifacts, node_modules, etc.
+```
 
+## Maze concept
+A maze is an `M x N` grid of cells.
 
-# labyrinth
-labyrinth projects
+Between vertically or horizontally adjacent cells, movement may be allowed or blocked.
+If one cell can reach another through a sequence of allowed moves, then a path exists between them.
 
-/**
- * Лабиринт - это матрица ячеек M x N.
- * Между соседними по вертикали или горизонтили ячейками может быть разрешен или запрещен переход.
- * Если из одной ячейки можно путем последовательных переходов перейти в другую ячейку, то значит между этими двумя ячейками есть путь.
- * Цель: сгенерировать Лабиринт, в котором был бы один и только один путь между любыми двумя ячейками,
- * в котором нет возвратов (возврат - пара путей между двумя ячейками, которые отличаются только направлениями).
- * 
- * Основная идея реализации:
- * Лабиринт описывается ненаправленным графом, в котором ячейки лабиринта - это вершины графа,
- * а переходы (заперщенные и разрешенные) - это ребра.
- * В этом случае цель достигается, когда сгенерирован ацикличный связный граф.
- * 1. создать граф лабиринта, в котором все переходы разрешены;
- * 2. запретить случайный переход;
- * 3. сделать обход графа:
- * 3.1. перейти в следующую вершину графа;
- * 3.2. если вершина уже есть в списке посещенных вершин, значит граф цикличный, запретить этот переход и вернуться к предыдущей вершине и перейти в 3.7;
- * 3.3. добавить вершину, в список посещенных вершин;
- * 3.4. случайным образом выбрать следующий разрешенный переход из этой вершины;
- * 3.5. если есть следующая разрешенный переход, то перейти в 3.1;
- * 3.6. если разрешенных переходов нет, то вернуться к предыдущей вершине;
- * 3.7. если есть предыдущая вершина, то перейти к 3.4;
- * 3.8. если предыдущих вершин нет, то обход завершен;
- * 3.9. если количество посещенных вершин равно количеству вершин графа, то граф связный;
- **/
+### Goal
+Generate a maze where:
+- there is exactly one path between any two cells
+- there are no loops
+
+### Main implementation idea
+Represent the maze as an undirected graph:
+- cells are graph vertices
+- transitions (allowed or blocked) are graph edges
+
+The goal is achieved when the generated graph is connected and acyclic.
+
+### Generation steps
+1. Create a maze graph where all transitions are initially allowed.
+2. Randomly block one transition.
+3. Traverse the graph:
+1. Move to the next vertex.
+2. If the vertex is already in the visited set, the graph contains a cycle: block this transition, return to the previous vertex, and continue from step 7.
+3. Add the vertex to the visited set.
+4. Randomly choose the next allowed transition from this vertex.
+5. If such a transition exists, go to step 1.
+6. If no allowed transitions remain, return to the previous vertex.
+7. If a previous vertex exists, go to step 4.
+8. If there is no previous vertex, traversal is complete.
+9. If the number of visited vertices equals the total number of vertices, the graph is connected.

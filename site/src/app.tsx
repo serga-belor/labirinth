@@ -10,7 +10,7 @@ import axios from "axios";
 
 
 const App: React.FC = () => {
-    const [m_labyrinth, SetLabirinth] = useState<LabyrinthInfo | null>(null);
+    const [m_labyrinth, setLabyrinth] = useState<LabyrinthInfo | null>(null);
 
     useEffect(() => {
         let stopped = false;
@@ -24,7 +24,7 @@ const App: React.FC = () => {
                     return;
                 }
                 console.log(`Labyrinth: ${labyrinth.cells}`);
-                SetLabirinth(labyrinth);
+                setLabyrinth(labyrinth);
             } catch(e) {
                 console.error("Error fetching the data:", e);
             }
@@ -38,7 +38,7 @@ const App: React.FC = () => {
     return (
         <div className="app">
             <header className="app-header">
-                <h1>Labirinth</h1>
+                <h1>Labyrinth</h1>
             </header>
             {m_labyrinth
                 ?
@@ -47,7 +47,7 @@ const App: React.FC = () => {
                     <Labyrinth
                         value={m_labyrinth}
                         OnClick={(idx) => {
-                            SetLabirinth({
+                            setLabyrinth({
                                 ...m_labyrinth,
                                 cells: m_labyrinth.cells.map((cell, i) => {
                                     return SetCurrent(cell, i === idx);

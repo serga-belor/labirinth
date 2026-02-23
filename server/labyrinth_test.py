@@ -9,7 +9,7 @@ def Test_Cell():
     assert cell.IsEqual( Cell.Create(True, False, False, True) )
     assert not cell.IsEqual( Cell.Create(False, False, False, True) )
 
-def Test_Labirinth():
+def Test_Labyrinth():
     labyrinth = Labyrinth.Create(6, 3, Cell.Create(True, True, True, True))
     dimention = labyrinth.Dimension()
     assert dimention[0] == 6 and dimention[1] == 3
@@ -44,5 +44,5 @@ def Test_Go():
 if __name__ == "__main__":
     PrintLabyrinth(Labyrinth.Generate(5, 5), (3, 2))
     Test_Cell()
-    Test_Labirinth()
+    Test_Labyrinth()
     Test_Go()

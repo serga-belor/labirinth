@@ -14,11 +14,11 @@ class Walls(IntEnum):
     ALL = TOP | RIGHT| BOTTOM | LEFT
 
 class Cell:
-    """Cell of a labirinth."""
+    """Cell of a labyrinth."""
 
     @classmethod
     def Create(cls, top: bool, right: bool, bottom: bool, left: bool) -> "Cell":
-        """Create a labirinth cell with specified walls"""
+        """Create a labyrinth cell with specified walls"""
         walls: int = Walls.NONE
         if top:
             walls |= Walls.TOP
@@ -67,7 +67,7 @@ class Labyrinth:
 
     @classmethod
     def Generate(cls, width: int, height: int) -> "Labyrinth":
-        """Generate random connected labirinth with specified dimensions"""
+        """Generate random connected labyrinth with specified dimensions"""
 
         # fill up the list of cells with non-connected cells
         cells: list[Cell] = [Cell.Create(True, True, True, True)] * width * height
@@ -93,7 +93,7 @@ class Labyrinth:
                 if neighbour_idx not in free_cells:
                     continue
                 candidates.append((neighbour_idx, cell_idx))
-                # print("Labirinth.Generate.AddFreeNeighboursAsCandidate: {}, add neighbour: {}".format(
+                # print("Labyrinth.Generate.AddFreeNeighboursAsCandidate: {}, add neighbour: {}".format(
                 #     str(cell_coord), str(cls.CoordByIndex(neighbour_idx, width))))
 
         def _RemoveNeighbourCellsWall(cell_idx1: int, cell_idx2: int) -> None:
@@ -123,7 +123,7 @@ class Labyrinth:
                 # remove bottom wall in cell1 and top wall in cell2
                 cells[cell_idx1] = Cell.Create(cell1.HaveWall(Walls.TOP), cell1.HaveWall(Walls.RIGHT), False, cell1.HaveWall(Walls.LEFT))
                 cells[cell_idx2] = Cell.Create(False, cell2.HaveWall(Walls.RIGHT), cell2.HaveWall(Walls.BOTTOM), cell2.HaveWall(Walls.LEFT))
-            # print("Labirinth.Generate.RemoveNeighbourCellsWall: {}, {}; new walls: {}, {}".format(
+            # print("Labyrinth.Generate.RemoveNeighbourCellsWall: {}, {}; new walls: {}, {}".format(
             #     str(cell_coord1), str(cell_coord2), str(cells[cell_idx1].Walls()), str(cells[cell_idx2].Walls())))
 
 
@@ -133,7 +133,7 @@ class Labyrinth:
         first_idx: int = random.choice(list(free_cells))
         free_cells.remove(first_idx)
         _AddFreeNeighboursAsCandidate(first_idx)
-        #print("Labirinth.Generate, first cell: " + str(cls.CoordByIndex(first_idx, width)))
+        #print("Labyrinth.Generate, first cell: " + str(cls.CoordByIndex(first_idx, width)))
 
         while len(candidates) > 0:
             # - choose random cell from candidates
@@ -151,7 +151,7 @@ class Labyrinth:
                 free_cells.remove(candidate_idx)
             _AddFreeNeighboursAsCandidate(candidate_idx)
             _RemoveNeighbourCellsWall(candidate_to_add[0], candidate_to_add[1])
-            #print("Labirinth.Generate, chosen candidate cell: " + str(cls.CoordByIndex(candidate_idx, width)))
+            #print("Labyrinth.Generate, chosen candidate cell: " + str(cls.CoordByIndex(candidate_idx, width)))
             #cls(width, height, cells).Print(cls.CoordByIndex(candidate_idx, width))
 
         return cls(width, height, cells)
@@ -180,7 +180,7 @@ class Labyrinth:
         self._cells = cells
 
     def Dimension(self) -> tuple[int, int]:
-        """Get dimension of the labirinth [width, height]"""
+        """Get dimension of the labyrinth [width, height]"""
         return (self._width, self._height)
     
     def Cells(self) -> tuple[int, ...]:
@@ -188,7 +188,7 @@ class Labyrinth:
         return tuple(item.GetWalls() for item in self._cells)
 
     def GetCell(self, coord: CoordType) -> Optional[Cell]:
-        """Get a labirinth cell by coordinates"""
+        """Get a labyrinth cell by coordinates"""
         column = coord[0]
         row = coord[1]
         if(column < 0 or column >= self._width or row < 0 or row >= self._height):
@@ -289,14 +289,14 @@ def PrintLabyrinth(labyrinth: Labyrinth,
 
 
 if __name__ == "__main__":
-    # Labirinth(
+    # Labyrinth(
     #     2, 2,
     #     [
     #         Cell.Create(True, True, True, True), Cell.Create(True, True, True, True),
     #         Cell.Create(True, True, True, True), Cell.Create(True, True, True, True)
     #     ]
     # ).Print(None)
-    # Labirinth(
+    # Labyrinth(
     #     2, 2,
     #     [
     #         Cell.Create(True, True, False, True), Cell.Create(True, True, True, True),
@@ -310,4 +310,4 @@ if __name__ == "__main__":
             Cell.Create(True, False, True, True), Cell.Create(False, True, True, False)
         ]
     ), None)
-    # Labirinth.Generate(30, 10).Print(None)
+    # Labyrinth.Generate(30, 10).Print(None)

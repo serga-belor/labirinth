@@ -29,16 +29,16 @@ def serve_resource(filename):
 
 width: Final = 5
 height: Final = 5
-labytinth_counter = 0
+labyrinth_counter = 0
 
 @app.route('/get-labyrinth', methods=['GET'])
 def get_labyrinth():
     labyrinth = Labyrinth.Generate(width, height)
-    global labytinth_counter
-    labytinth_counter += 1
+    global labyrinth_counter
+    labyrinth_counter += 1
 
     data = {
-        "id": f"{labytinth_counter}",
+        "id": f"{labyrinth_counter}",
         "width": f"{width}",
         "height": f"{height}",
         "cells": list(labyrinth.Cells()),
