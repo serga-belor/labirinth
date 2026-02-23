@@ -1,41 +1,65 @@
-﻿# Labyrinth
+# Labyrinth
 
 This project contains a maze generator with:
 - a Node.js backend server written in TypeScript
 - a frontend built with Webpack, TypeScript, and React
 
-## Install build tools
+## Prerequisites
+- Node.js 20+ (Node.js 22 is used in Docker)
+- Docker Desktop (optional, for container run)
+
+## Build both projects
+From the repository root:
+
 ```bash
-npm install -g webpack webpack-cli
+npm --prefix site install
+npm --prefix site run build
+npm --prefix server install
+npm --prefix server run build
 ```
 
-## Before build
+This builds frontend assets into `server/public` and compiles the backend into `server/dist`.
+
+## Run locally (without Docker)
+From the repository root:
+
 ```bash
-npm update
+npm --prefix site run build
+npm --prefix server install
+npm --prefix server run build
+npm --prefix server start
 ```
 
-## Site address
-`http://localhost:3001/`
+Open the site at `http://localhost:3001/`.
+
+## Run with Docker
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+Open the site at `http://localhost:3001/`.
 
 ## Project structure
 ```text
 project-root/
-├── server/                   # Node.js + TypeScript HTTP server
-│   ├── src/
-│   │   └── [...]             # TypeScript server code
-│   ├── package.json          # Node dependencies and scripts
-│   ├── tsconfig.json         # TypeScript config for server build
-│   └── Dockerfile            # Container for the Node server
-├── site/                     # TypeScript/HTML app
-│   ├── src/
-│   │   └── [...]             # TypeScript source code
-│   ├── public/               # Static assets (HTML, CSS, images)
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── webpack.config.js
-│   └── Dockerfile            # Build container for the client
-├── docker-compose.yml        # Compose file to run services
-└── .gitignore                # Exclude build artifacts, node_modules, etc.
++-- server/                   # Node.js + TypeScript HTTP server
+�   +-- src/
+�   �   +-- [...]             # TypeScript server code
+�   +-- package.json          # Node dependencies and scripts
+�   +-- tsconfig.json         # TypeScript config for server build
+�   +-- Dockerfile            # Container for the Node server
++-- site/                     # TypeScript/HTML app
+�   +-- src/
+�   �   +-- [...]             # TypeScript source code
+�   +-- public/               # Static assets (HTML, CSS, images)
+�   +-- package.json
+�   +-- tsconfig.json
+�   +-- webpack.config.js
+�   +-- Dockerfile            # Build container for the client
++-- docker-compose.yml        # Compose file to run services
++-- .gitignore                # Exclude build artifacts, node_modules, etc.
 ```
 
 ## Maze concept

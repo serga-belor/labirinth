@@ -7,7 +7,7 @@ import { Labyrinth, printLabyrinth } from "./labyrinth";
 const publicDirPath = path.resolve(__dirname, "../public");
 
 const app = express();
-const port = Number(process.env.PORT ?? 5000);
+const port = Number(process.env.PORT ?? 3001);
 
 const width = 5;
 const height = 5;
